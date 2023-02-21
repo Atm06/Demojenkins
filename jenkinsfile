@@ -1,0 +1,60 @@
+pipeline {
+    agent any
+    environment{
+        name = "Ashutosh"
+    }
+    parameters{
+        booleanParam(name: "TEST_BOOLEAN", defaultValue: true, description: "Sample boolean parameter")
+        string(name: "TEST_STRING", defaultValue: "Ashutosh", trim: true, description: "Sample string parameter")
+        password(name: "TEST_PASSWORD", defaultValue: "SECRET", description: "Sample password parameter")
+        choice(name: "TEST_CHOICE", choices: ["production", "staging", "development"], description: "Sample choice parameter")
+    }
+    stages {
+        stage('Run a command') {
+            steps {
+                sh '''
+                ls
+                date
+                pwd
+                '''
+            }
+        }
+        stage('Environment Variable') {
+            steps {
+                sh 'echo "${BUILD_ID}"'
+                sh 'echo "${name}"'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Test'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'Build'
+            }
+        }
+        stage('Deploy on Test') {
+            steps {
+                echo 'Deploy on Test'
+            }
+        }
+        stage('Deploy on prod') {
+            steps {
+                echo 'Deploy on Prod'
+            }
+        }
+    }
+    post{
+        always{
+            echo "Always gets executed"
+        }
+        failure{
+            echo "Action failed"
+        }
+        success{
+            echo "Successful"
+        }
+    }
+}
